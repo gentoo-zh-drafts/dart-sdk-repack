@@ -63,5 +63,5 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            /var/cache/distfiles/*.tar.zst
+            /var/cache/distfiles/dart-sdk-${{ inputs.TAG }}.tar.zst
           tag_name: ${{ inputs.TAG }}
