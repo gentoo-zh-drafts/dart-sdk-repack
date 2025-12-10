@@ -46,10 +46,10 @@ jobs:
           P: dart-sdk-${{ inputs.TAG }}
         run: |
           abuild-keygen -a -n
-          # cd aports/testing/dart/
-          # sed -i "s/^pkgver=.*/pkgver=${{ inputs.TAG }}/" APKBUILD
-          # abuild -f deps
-          # abuild -f snapshot
+          cd aports/testing/dart/
+          sed -i "s/^pkgver=.*/pkgver=${{ inputs.TAG }}/" APKBUILD
+          abuild -f deps
+          abuild -f snapshot
 
       - name: push tag
         uses: ad-m/github-push-action@master
