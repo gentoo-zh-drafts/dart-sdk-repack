@@ -22,7 +22,7 @@ jobs:
       - name: Setup latest Alpine Linux
         uses: jirutka/setup-alpine@v1
         with:
-          volumes: /var/cache/distfiles:/var/cache/distfiles
+          volumes: /var/cache:/var/cache
           extra-repositories: |
             http://dl-cdn.alpinelinux.org/alpine/edge/testing
           packages: >
