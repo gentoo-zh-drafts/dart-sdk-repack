@@ -40,7 +40,7 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git tag --delete ${P} || echo yes
 
-      - name: repack dart sdk
+      - name: run abuild snapshot
         shell: alpine.sh --root {0}
         env:
           P: dart-sdk-${{ inputs.TAG }}
@@ -48,6 +48,7 @@ jobs:
           abuild-keygen -a -n
           cd aports/testing/dart/
           sed -i "s/^pkgver=.*/pkgver=${{ inputs.TAG }}/" APKBUILD
+          sed -i "/mcli cp/d" APKBUILD
           abuild -F deps
           abuild -F snapshot
 
@@ -62,5 +63,5 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            /var/cache/distfiles/*.tar.xz
+            /var/cache/distfiles/*.tar.zst
           tag_name: ${{ inputs.TAG }}
