@@ -45,7 +45,7 @@ jobs:
         env:
           P: dart-sdk-${{ inputs.TAG }}
         run: |
-          abuild-keygen -a -i
+          abuild-keygen -a -n
           # cd aports/testing/dart/
           # sed -i "s/^pkgver=.*/pkgver=${{ inputs.TAG }}/" APKBUILD
           # abuild -f deps
