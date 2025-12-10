@@ -1,0 +1,66 @@
+name: "Generator"
+on:
+  workflow_dispatch:
+    inputs:
+      TAG:
+        description: "github tag: 3.10.4"
+        required: true
+
+jobs:
+  Generator:
+    permissions: write-all # required by push tag
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: fetch APKBUILD
+        uses: actions/checkout@v6
+        with:
+          repository: alpinelinux/aports
+          path: "aports"
+
+      - name: Setup latest Alpine Linux
+        uses: jirutka/setup-alpine@v1
+        with:
+          extra-repositories: |
+            http://dl-cdn.alpinelinux.org/alpine/edge/testing
+          packages: >
+            alpine-sdk
+            abuild
+            git
+            wget
+            teapot-tools
+
+      - name: delete old tag
+        env:
+          P: dart-sdk-${{ inputs.TAG }}
+        run: |
+          git config --global --add safe.directory '*'
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git tag --delete ${P} || echo yes
+
+      - name: repack dart sdk
+        shell: alpine.sh --root {0}
+        env:
+          P: dart-sdk-${{ inputs.TAG }}
+        run: |
+          abuild-keygen -a -i
+          cd aports/testing/dart/
+          sed -i "s/^pkgver=.*/pkgver=${{ inputs.TAG }}/" APKBUILD
+          abuild -f deps
+          abuild -f snapshot
+
+      - name: push tag
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          force: true
+          tags: true
+
+      - name: upload dart repack to release artifaces
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            /var/cache/distfiles/*.tar.xz
+          tag_name: ${{ inputs.TAG }}
