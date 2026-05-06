@@ -61,7 +61,7 @@ jobs:
           tags: true
 
       - name: upload dart repack to release artifaces
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: |
             /var/cache/distfiles/dart-sdk-${{ inputs.TAG }}.tar.zst
