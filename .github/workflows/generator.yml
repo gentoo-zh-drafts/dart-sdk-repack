@@ -24,6 +24,8 @@ jobs:
         with:
           volumes: /var/cache:/var/cache
           branch: edge
+          extra-repositories: |
+            http://dl-cdn.alpinelinux.org/alpine/edge/testing
           packages: >
             alpine-sdk
             abuild
