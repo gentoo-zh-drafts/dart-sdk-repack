@@ -11,10 +11,10 @@ jobs:
     permissions: write-all # required by push tag
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: fetch APKBUILD
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: alpinelinux/aports
           path: "aports"
