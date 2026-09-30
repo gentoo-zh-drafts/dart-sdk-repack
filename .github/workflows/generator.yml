@@ -1,4 +1,5 @@
 name: "Generator"
+run-name: dart-sdk-${{ inputs.TAG }}
 on:
   workflow_dispatch:
     inputs:
